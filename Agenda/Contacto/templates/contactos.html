@@ -1,0 +1,97 @@
+{% extends './base.html' %}
+{% block title %}Gestión de Alumnos{% endblock %}
+
+{% block body %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-sm-12 col-md-6 col-lg-4 col-xl-4">
+            <h2>Ingreso de Alumno</h2>
+            <div class="card">
+                <div class="card-body">
+                    <form action="/registrarcontacto" method="POST">
+                        {% csrf_token%}
+                        <div class="form-group">
+                            <label for="txtnombre">Nombre:</label>
+                            <input type="text" class="form-control" id="txtnombre" name="txtnombre"><br>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtnumero">Numero:</label>
+                            <input type="text" class="form-control" id="txtnumero" name="txtnumero"><br>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtemail">Email:</label>
+                            <input type="text" class="form-control" id="txtemail" name="txtemail"><br>
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary form-control">Guardar</button>
+                        </div>
+    
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 col-md-6 col-lg-8 col-xl-8">
+            <h2>Lista de Datos</h2>
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th id="cuadroi">Codigo</th>
+                        <th id="cuadroi">Nombre</th>
+                        <th id="cuadroi">Numero</th>
+                        <th id="cuadroi">Email</th>
+                        <th id="cuadroi">Opción</th>
+                        <th id="cuadroi">Opción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for c in contactos %}
+                    <tr>
+                        <td id="cuadroc">{{ c.codigo }}</td>
+                        <td id="cuadroc">{{ c.nombre }}</td>
+                        <td id="cuadroc">{{ c.numero }}</td>
+                        <td id="cuadroc">{{ c.email }}</td>               
+                        <td id="cuadroc">
+                            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editarcontacto{{ c.codigo }}">Editar</button>
+                        </td>
+                        <td id="cuadroc">
+                            <a href="eliminarcontacto/{{ c.codigo }}" class="btn btn-danger">Eliminar</a>
+                        </td>
+                    </tr>
+                    <div class="modal fade" id="editarcontacto{{ c.codigo }}" tabindex="-1" role="dialog" aria-labelledby="editarcontacto{{ c.codigo }}Label" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editarcontacto{{ c.codigo }}Label">Editar Curso</h5>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="/editarcontacto/{{ c.codigo }}" method="POST">
+                                        {% csrf_token%}
+                                        <div class="form-group">
+                                            <label for="txtnombre">Nombre:</label>
+                                            <input type="text" class="form-control" id="txtnombre-edit" name="txtnombre" value="{{ c.nombre }}">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="txtnumero">Numero:</label>
+                                            <input type="text" class="form-control" id="txtnumero-edit" name="txtnumero" value="{{ c.numero }}">
+                                        </div><br>
+                                        <div class="form-group">
+                                            <label for="txtemail">Email:</label>
+                                            <input type="text" class="form-control" id="txtemail-edit" name="txtemail" value="{{ c.email }}">
+                                        </div><br>                                
+                                        <div class="form-group">
+                                            <button type="submit" class="btn btn-primary form-control">Guardar</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+        
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
